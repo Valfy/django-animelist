@@ -1,7 +1,7 @@
 from django.urls import path
-
-import anime.views
+from .views import *
 
 urlpatterns = [
-    path('', anime.views.main, name='main')
+    path('', main, name='main'),
+    path('tag/<int:tag_id>/', tagged, name='tag')
 ]
