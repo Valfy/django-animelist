@@ -6,8 +6,10 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1>Animelist</h1>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                {% block links %}
                 <li><a class="nav-link px-4 text-danger">Главная страница</a></li>
-                <li><a href="#" class="nav-link px-0 text-white">Пользователи</a></li>
+                <li><a class="nav-link px-0 text-white">Пользователи</a></li>
+                {% endblock %}
             </ul>
 
             <div class="text-end">
@@ -20,14 +22,14 @@
 {% endblock %}
 
 {% block main %}
-<div class="row row-cols-1 row-cols-md-2 g-0">
-{% for anime in animes %}
-    <div class="card" style="width: 14rem;">
-        <img src="{{ anime.image.url }}" class="card-img-top" alt="">
+<div class="row row-cols-1 row-cols-md-2 m-2 g-2">
+{% for anime in anime_objects %}
+    <div class="card p-1 m-2" style="width: 12rem;">
+        <img src="{{ anime.image.url }}" width=180px height=270px alt="">
         <div class="card-body">
             <h5 class="card-title">{{ anime.name }} ({{ anime.release_date }})</h5>
             <p class="card-text">{{ anime.release_date }}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="{% url 'anime' anime.pk %}" class="btn btn-danger">Посмотреть</a>
         </div>
     </div>
 {% endfor %}
