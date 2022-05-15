@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from .models import *
 
-# Create your views here.
+def registration_page(request):
+    return render(request, 'rp.html')
+
+def login_page(request):
+    return render(request, 'lp.html')
