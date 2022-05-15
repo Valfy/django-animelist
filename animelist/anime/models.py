@@ -14,7 +14,7 @@ class Anime(models.Model):
     name = models.CharField(max_length=64, verbose_name='Название')
     description = models.TextField(blank=True, verbose_name='Описание')
     release_date = models.IntegerField(verbose_name='Год выпуска')
-    image = models.ImageField(upload_to='images/anime/%Y/%m/%d/', verbose_name='Картинка')
+    image = models.ImageField(upload_to='anime/%Y/%m/%d/', verbose_name='Картинка')
     tags = models.ManyToManyField(Anime_Tag, verbose_name='Тэги')
 
     def __str__(self):

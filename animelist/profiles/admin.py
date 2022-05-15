@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import AnimeProfile
 
-# Register your models here.
+
+class AnimeProfileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'userlink', 'username')
+    list_display_links = ('id', 'userlink')
+    ordering = ['-userlink']
+
+
+admin.site.register(AnimeProfile, AnimeProfileAdmin)

@@ -3,3 +3,11 @@
 {% block title %}<title>Регистрация</title>{% endblock %}
 
 {% block links %} {% include 'inc/clean_links.html' %} {% endblock %}
+
+{% block main %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-danger btn-block">Зарегистрироваться</button>
+</form>
+{% endblock %}

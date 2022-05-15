@@ -1,6 +1,6 @@
 from django.contrib import admin
-
 from .models import Anime_Tag, Anime
+
 
 class Anime_Tag_Admin(admin.ModelAdmin):
     list_display = ('id', 'name')
