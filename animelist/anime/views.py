@@ -3,12 +3,14 @@ from .models import *
 
 def main(request):
     anime_objects = Anime.objects.all()
-    return render(request, 'anime/all.html', {'anime_objects': anime_objects})
+    tags = Anime_Tag.objects.all()
+    return render(request, 'anime/all.html', {'anime_objects': anime_objects, 'tags': tags})
 
 def tagged(request, tag_id):
     anime_objects = Anime.objects.filter(tags=tag_id)
-    tag = Anime_Tag.objects.get(pk=tag_id)
-    return render(request, 'anime/tagged.html', {'anime_objects': anime_objects, 'tag': tag})
+    tags = Anime_Tag.objects.all()
+    tag = tags.get(pk=tag_id)
+    return render(request, 'anime/tagged.html', {'anime_objects': anime_objects, 'tags': tags, 'tag': tag})
 
 def anime(request, anime_id):
     anime_object = Anime.objects.get(pk=anime_id)
