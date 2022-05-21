@@ -9,7 +9,7 @@ class Anime_Tag_Admin(admin.ModelAdmin):
 
 
 class AnimeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'release_date')
+    list_display = ('id', 'name', 'release_date', 'is_activated')
     list_display_links = ('id', 'name')
 
     ordering = ['-id']

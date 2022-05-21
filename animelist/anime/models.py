@@ -16,6 +16,7 @@ class Anime(models.Model):
     release_date = models.IntegerField(verbose_name='Год выпуска')
     image = models.ImageField(upload_to='anime/%Y/%m/%d/', verbose_name='Картинка')
     tags = models.ManyToManyField(Anime_Tag, verbose_name='Тэги')
+    is_activated = models.BooleanField(default=True, verbose_name='Отображается ли на сайте')
 
     def __str__(self):
         return self.name

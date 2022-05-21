@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block main %}
+{% if page_obj %}
 <div class="row row-cols-1 row-cols-md-2 m-2 g-2">
-{% for anime in anime_objects %}
+{% for anime in page_obj %}
     <div class="card p-1 m-2" style="width: 12rem; height: 27rem">
         <img src="{{ anime.image.url }}" width=180px height=270px alt="">
         <div class="card-body">
@@ -19,4 +20,23 @@
     </div>
 {% endfor %}
 </div>
+{% else %}
+    <div class="m-3">
+        <h5>Таких аниме нет</h5>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block paginator %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" style="color: #dc3545" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+      {% endif %}
+      <li class="page-item active"><a class="page-link" style="background-color: #dc3545; border-color: #dc3545">{{ page_obj.number }}</a></li>
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" style="color: #dc3545" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+      {% endif %}
+  </ul>
+</nav>
 {% endblock %}

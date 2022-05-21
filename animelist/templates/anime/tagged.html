@@ -1,5 +1,11 @@
 {% extends 'anime/all.html' %}
 
-{% block title %}<title>Аниме по тэгу: {{ tag.name }}</title>{% endblock %}
+{% block title %}<title>Аниме по тегу: {{ tag.name }}</title>{% endblock %}
 
 {% block links %} {% include 'inc/clean_links.html' %} {% endblock %}
+
+{% block sometext %}
+<div class="m-3">
+    <h3>Аниме по тегу: {{ tag.name }}</h3>
+</div>
+{% endblock %}

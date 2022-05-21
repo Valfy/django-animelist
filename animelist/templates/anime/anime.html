@@ -11,13 +11,13 @@
     </div>
     <div class="col gy-3" style="max-width: 80%;>
         <div class="col">
-            <h3>{{ anime_object.name }}</h3>
+            <h3 class="m-0">{{ anime_object.name }}</h3>
             {% if anime_object.description %}
             Описание: <a>{{ anime_object.description }}</a>
             {% else %}
             Описание отсутсвует.
             {% endif %}
-            <p>Тэги:
+            <p class="m-0">Тэги:
                 {% for tag in anime_object.tags.all|dictsort:"name"%}
                 {% if forloop.last %}
                 <a href="{% url 'tag' tag.pk %}">{{ tag.name }}</a>
@@ -26,8 +26,9 @@
                 {% endif %}
                 {% endfor %}
             </p>
-            <p class="text-muted">Год выпуска: {{ anime_object.release_date }}</p>
+            <p class="text-muted m-0">Год выпуска: {{ anime_object.release_date }}</p>
         </div>
     </div>
 </div>
 {% endblock %}
+{% block paginator %}{% endblock %}
