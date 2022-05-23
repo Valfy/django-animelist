@@ -22,16 +22,20 @@
 {% block header %}
 <header class="p-3 bg-dark text-white">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <ul class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1>Animelist</h1>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <ul class="nav col-9 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 {% block links %}{% endblock %}
             </ul>
-
-            <div class="text-end">
-                <a href="{% url 'rp' %}" class="btn btn-danger">Регистрация</a>
+            <ul class="nav nav-pills">
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'profile' a_user.pk %}" class="nav-link px-4 text-white">Добро пожаловать, {{ request.user.username }}</a></li>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Выход</a></li>
+                {% else %}
+                <a href="{% url 'rp' %}" class="btn btn-danger m-2">Регистрация</a>
                 <a href="{% url 'lp' %}" class="btn btn-danger m-2">Вход</a>
-            </div>
+                {% endif %}
+            </ul>
         </div>
     </div>
     {% block header_for_tags %}

@@ -21,12 +21,7 @@ class AnimeProfile(models.Model):
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        AnimeProfile.objects.create(userlink=instance)
-    else:
-        try:
-            instance.profile.save()
-        except ObjectDoesNotExist:
-            AnimeProfile.objects.create(userlink=instance)
+        AnimeProfile.objects.create(userlink=instance, username=instance)
 
 
 

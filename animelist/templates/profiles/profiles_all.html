@@ -3,20 +3,27 @@
 {% block title %}<title>Анимелист</title>{% endblock %}
 
 {% block links %}
-<li><a class="nav-link px-4 text-danger">Главная страница</a></li>
-<li><a href="{% url 'profiles_all' %}" class="nav-link px-0 text-white">Пользователи</a></li>
+<li><a href="{% url 'main' %}" class="nav-link px-4 text-white">Главная страница</a></li>
+<li><a class="nav-link px-0 text-danger">Пользователи</a></li>
 {% endblock %}
+
+{% block header_for_tags %}{% endblock %}
 
 {% block main %}
 {% if page_obj %}
 <div class="row row-cols-1 row-cols-md-2 m-2 g-2">
-{% for anime in page_obj %}
-    <div class="card p-1 m-2" style="width: 190px; height: 420px">
-        <img src="{{ anime.image.url }}" width=180px height=270px alt="">
+{% for profile in page_obj %}
+    <div class="card p-1 m-2" style="width: 190px; height: 320px">
+        {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" width=180px height=180px alt="">
+        {% else %}
+        {% load static %}
+        <img src="{% static 'profiles/standart_avatar.png' %}" width=180px height=180px alt="...">
+        {% endif %}
         <div class="card-body p-2">
-            <h6 class="card-title" style="text-align :center">{{ anime.name }} ({{ anime.release_date }})</h6>
+            <h6 class="card-title" style="text-align :center">{{ profile.username }}</h6>
         </div>
-        <a href="{% url 'anime' anime.pk %}" class="btn btn-danger">Посмотреть</a>
+        <a href="{% url 'profile' profile.pk %}" class="btn btn-danger">Посмотреть</a>
     </div>
 {% endfor %}
 </div>

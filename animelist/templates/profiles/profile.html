@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>{{ profile.username }}</title>{% endblock %}
+
+{% block links %} {% include 'inc/clean_links.html' %} {% endblock %}
+
+{% block header_for_tags %}{% endblock %}
+
+{% block main %}
+<div class="row g-0">
+    <div class="card m-3" style="max-width: 260px; max-height: 260px">
+        {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" width=250px height=250px class="m-1" alt="...">
+        {% else %}
+        {% load static %}
+        <img src="{% static 'profiles/standart_avatar.png' %}" width=250px height=250px class="m-1" alt="...">
+        {% endif %}
+    </div>
+    <div class="col gy-3" style="max-width: 80%;>
+        <div class="col">
+            <h3 class="m-0">{{ profile.username }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block paginator %}{% endblock %}
