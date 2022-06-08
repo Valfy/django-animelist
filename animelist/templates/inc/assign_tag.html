@@ -1,0 +1,8 @@
+<script>
+    function assign_tag()
+    {
+        if (document.querySelector('#tag_select').value != '') {
+            document.location.assign(`http://127.0.0.1:8000/tag/${document.querySelector('#tag_select').value}`)
+        }
+    }
+</script>

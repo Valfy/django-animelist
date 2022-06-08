@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
+
 from .models import *
-from profiles.models import AnimeProfile
+from profiles.models import AnimeProfile, UserAnimeRate
+
 
 def main(request):
     anime_objects = Anime.objects.filter(is_activated=True)
@@ -11,9 +14,17 @@ def main(request):
     tags = Anime_Tag.objects.all()
     if request.user.is_authenticated:
         authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
-        return render(request, 'anime/all.html', {'page_obj': page_obj, 'tags': tags, 'a_user': authenticated_user})
+        context = {
+            'page_obj': page_obj,
+            'tags': tags,
+            'a_user': authenticated_user
+        }
     else:
-        return render(request, 'anime/all.html', {'page_obj': page_obj, 'tags': tags})
+        context = {
+            'page_obj': page_obj,
+            'tags': tags
+        }
+    return render(request, 'anime/all.html', context)
 
 
 def tagged(request, tag_id):
@@ -25,18 +36,52 @@ def tagged(request, tag_id):
     tag = tags.get(pk=tag_id)
     if request.user.is_authenticated:
         authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
-        return render(request, 'anime/tagged.html', {'page_obj': page_obj, 'tags': tags, 'tag': tag,\
-            'a_user': authenticated_user})
+        context = {
+            'page_obj': page_obj,
+            'tags': tags,
+            'tag': tag,
+            'a_user': authenticated_user
+        }
     else:
-        return render(request, 'anime/tagged.html', {'page_obj': page_obj, 'tags': tags, 'tag': tag})
+        context = {
+            'page_obj': page_obj,
+            'tags': tags,
+            'tag': tag
+        }
+    return render(request, 'anime/tagged.html', context)
 
 
 def anime(request, anime_id):
-    anime_object = Anime.objects.get(pk=anime_id)
+    anime_obj = Anime.objects.get(pk=anime_id)
     tags = Anime_Tag.objects.all()
     if request.user.is_authenticated:
         authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
-        return render(request, 'anime/anime.html', {'anime_object': anime_object, 'tags': tags,\
-            'a_user': authenticated_user})
+        try:
+            anime_status = UserAnimeRate.objects.get(user=authenticated_user, anime=anime_obj)
+        except ObjectDoesNotExist:
+            anime_status = UserAnimeRate.objects.create(user=authenticated_user, anime=anime_obj, is_watched=0)
+            anime_status.save()
+        context = {
+            'anime_obj': anime_obj,
+            'tags': tags,
+            'a_user': authenticated_user,
+            'a_status': anime_status
+        }
     else:
-        return render(request, 'anime/anime.html', {'anime_object': anime_object, 'tags': tags})
+        context = {
+            'anime_obj': anime_obj,
+            'tags': tags,
+        }
+    return render(request, 'anime/anime.html', context)
+
+
+def anime_change_watched(request, anime_id):
+    anime_obj = Anime.objects.get(pk=anime_id)
+    if request.method == "POST":
+        authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
+        anime_status = UserAnimeRate.objects.filter(user=authenticated_user, anime=anime_obj)
+        if anime_status.values_list('is_watched')[0][0]:
+            anime_status.update(is_watched=False)
+        else:
+            anime_status.update(is_watched=True)
+    return redirect('anime', anime_id)

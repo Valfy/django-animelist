@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .models import AnimeProfile
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
+
+from .models import AnimeProfile, UserAnimeRate
+
 
 def registration_page(request):
     if request.method == "POST":
@@ -42,11 +44,20 @@ def user_logout(request):
 
 def profile_view(request, user_id):
     profile = AnimeProfile.objects.get(pk=user_id)
+    total_anime = UserAnimeRate.objects.filter(user=user_id, is_watched=True)
     if request.user.is_authenticated:
         authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
-        return render(request, 'profiles/profile.html', {'profile': profile, 'a_user': authenticated_user})
+        context = {
+            'profile': profile,
+            'a_user': authenticated_user,
+            'total_anime': total_anime
+        }
     else:
-        return render(request, 'profiles/profile.html', {'profile': profile})
+        context = {
+            'profile': profile,
+            'total_anime': total_anime
+        }
+    return render(request, 'profiles/profile.html', context)
 
 
 def profiles_all(request):
@@ -56,6 +67,12 @@ def profiles_all(request):
     page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
         authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
-        return render(request, 'profiles/profiles_all.html', {'page_obj': page_obj, 'a_user': authenticated_user})
+        context = {
+            'page_obj': page_obj,
+            'a_user': authenticated_user
+        }
     else:
-        return render(request, 'profiles/profiles_all.html', {'page_obj': page_obj})
+        context = {
+            'page_obj': page_obj,
+        }
+    return render(request, 'profiles/profiles_all.html', context)
