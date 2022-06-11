@@ -16,7 +16,7 @@
         <img src="{% static 'profiles/standart_avatar.png' %}" width=250px height=250px class="m-1" alt="...">
         {% endif %}
     </div>
-    <div class="col gy-3" style="max-width: 80%;>
+    <div class="col gy-3" style="max-width: 80%;">
         <div class="col">
             <h3 class="m-0">{{ profile.username }}</h3>
             <h5 class="m-0">Просмотренно аниме: {{ total_anime|length }}</h5>
@@ -26,18 +26,22 @@
 
 <ul class="list-group">
     <div class="mx-3">
-    <h6>Просмотренные аниме</h6>
-    {% for anime in total_anime %}
-        <li class="list-group-item">
-            <img src="{{ anime.anime.image.url }}" width=60px height=90px>
-            <a href="{% url 'anime' anime.anime.pk %}">{{ anime.anime.name }}</a>
-            {% if anime.rate %}
-            <a>{{ anime.rate }}</a>
-            {% else %}
-            <a>-</a>
-            {% endif %}
-        </li>
-    {% endfor %}
+        {% if total_anime|length == 0 %}
+            <h6 class="m-0">У пользователя не добавлены просмотренные аниме.</h6>
+        {% else %}
+            <h6 class="mb-2">Просмотренные аниме:</h6>
+            {% for anime in total_anime %}
+                <li class="list-group-item p-1">
+                    <img src="{{ anime.anime.image.url }}" width=50px height=75px>
+                    <a href="{% url 'anime' anime.anime.pk %}">{{ anime.anime.name }}</a>
+                    {% if anime.rate > 0 %}
+                    <a>{{ anime.rate }}</a>
+                    {% else %}
+                    <a>-</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% endif %}
     </div>
 </ul>
 {% endblock %}

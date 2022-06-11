@@ -28,12 +28,13 @@ def create_profile(sender, instance, created, **kwargs):
 class UserAnimeRate(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(AnimeProfile, on_delete=models.CASCADE, verbose_name='Юзер')
-    anime = models.ForeignKey(Anime, on_delete=models.CASCADE, verbose_name='Юзер')
+    anime = models.ForeignKey(Anime, on_delete=models.CASCADE, verbose_name='Аниме')
     is_watched = models.BooleanField(verbose_name='Просмотренно?')
-    rate = models.IntegerField(blank=True, verbose_name='Оценка', null=True)
+    rate = models.IntegerField(blank=True, verbose_name='Оценка')
 
     class Meta:
-        ordering = ['rate', 'anime']
+        ordering = ['-rate', 'anime']
+
 
 
 

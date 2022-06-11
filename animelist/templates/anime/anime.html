@@ -2,6 +2,11 @@
 
 {% block title %}<title>{{ anime_obj.name }}</title>{% endblock %}
 
+{% block scripts %}
+{% include 'inc/assign_tag.html' %}
+{% include 'inc/give_rate.html' %}
+{% endblock %}
+
 {% block links %} {% include 'inc/clean_links.html' %} {% endblock %}
 
 {% block main %}
@@ -11,14 +16,22 @@
     </div>
     <div class="col gy-3" style="max-width: 80%;">
         <div class="col">
-            <h3 class="m-0">{{ anime_obj.name }}</h3>
-            {% if anime_obj.description %}
-            Описание: <a>{{ anime_obj.description }}</a>
+            <h2 class="m-0">{{ anime_obj.name }}</h2>
+            {% if a_totalrate.avg %}
+            <div style="position: relative; display:inline-block" class="m-0" >
+                <h5 class="m-0" style="display:inline-block"> Оценка: {{ a_totalrate.avg|floatformat:2 }}</h5>
+                <h6 class="m-0" style="display:inline-block">({{ a_totalrate.count_rates }} голос)</h6>
+            </div>
             {% else %}
-            Описание отсутсвует.
+                <h5 class="m-0"> Оценок нет.</h5>
+            {% endif %}
+            {% if anime_obj.description %}
+            <p class="m-0">Описание: {{ anime_obj.description }}</p>
+            {% else %}
+            <p class="m-0">Описание отсутсвует.</p>
             {% endif %}
             <p class="m-0">Тэги:
-                {% for tag in anime_obj.tags.all|dictsort:"name"%}
+                {% for tag in anime_obj.tags.all|dictsort:"name" %}
                 {% if forloop.last %}
                 <a href="{% url 'tag' tag.pk %}">{{ tag.name }}</a>
                 {% else %}
@@ -27,12 +40,37 @@
                 {% endfor %}
             </p>
             <p class="text-muted m-0">Год выпуска: {{ anime_obj.release_date }}</p>
+            {% if a_totalviews.count_views %}
+                <p class="m-0">Было просмотренно {{ a_totalviews.count_views }} раз</p>
+            {% else %}
+                <p class="m-0">Никто ещё не посмотрел это аниме.</p>
+            {% endif %}
         </div>
     </div>
 </div>
 {% if request.user.is_authenticated %}
-<div class="row g-0">
-    <div class="col-3 gy-3">
+<div class="mx-3 d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="m-0" style="max-width: 125px">
+        <select class="form-select" id="rate_select" required="">
+            <option value="">Оценка</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="0">-</option>
+        </select>
+    </div>
+    <button onclick=give_rate() class="btn btn-danger mx-3" type="submit" id="rate_select_button">Оценить</button>
+</div>
+
+<div class="row g-0 mt-3">
+    <div class="col-3 mx-3">
         <form method="post" action="{% url 'anime_change_watched' anime_obj.id %}">
         {% csrf_token %}
         {% if a_status.is_watched %}

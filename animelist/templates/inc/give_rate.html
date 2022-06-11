@@ -1,0 +1,8 @@
+<script>
+    function give_rate()
+    {
+        if (document.querySelector('#rate_select').value != '') {
+            document.location.assign(`http://127.0.0.1:8000/anime_change_rate/{{ anime_obj.pk }}/?r=${document.querySelector('#rate_select').value}`)
+        }
+    }
+</script>
