@@ -18,8 +18,13 @@
     </div>
     <div class="col gy-3" style="max-width: 80%;">
         <div class="col">
-            <h3 class="m-0">{{ profile.username }}</h3>
-            <h5 class="m-0">Просмотренно аниме: {{ total_anime|length }}</h5>
+            <h6 class="m-0" style="display:inline-block; font-size: 30px">{{ profile.username }}</h6>
+            {% if request.user == profile.userlink %}
+            <a class="m-0" href="{% url 'profile_settings' profile.userlink.pk %}" style="display:inline-block;
+            text-decoration-line: none; color: #dc3545; font-size: 14px">Настройки</a>
+            {% endif %}
+            <h5 class="m-0" style="font-size: 16px">Просмотренно аниме: {{ total_anime|length }}</h5>
+            <p class="text-muted m-0" style="font-size: 14px">Дата регистрации: {{ profile.userlink.date_joined|date:"d F Y" }}</p>
         </div>
     </div>
 </div>
@@ -27,17 +32,17 @@
 <ul class="list-group">
     <div class="mx-3">
         {% if total_anime|length == 0 %}
-            <h6 class="m-0">У пользователя не добавлены просмотренные аниме.</h6>
+            <h6 class="m-0" style="font-size: 16px">У пользователя не добавлены просмотренные аниме.</h6>
         {% else %}
-            <h6 class="mb-2">Просмотренные аниме:</h6>
+            <h6 class="mb-2" style="font-size: 16px">Просмотренные аниме: </h6>
             {% for anime in total_anime %}
                 <li class="list-group-item p-1">
                     <img src="{{ anime.anime.image.url }}" width=50px height=75px>
-                    <a href="{% url 'anime' anime.anime.pk %}">{{ anime.anime.name }}</a>
+                    <a href="{% url 'anime' anime.anime.pk %}" style="color: #dc3545; text-decoration-line: none; font-size: 20px">{{ anime.anime.name }}</a>
                     {% if anime.rate > 0 %}
-                    <a>{{ anime.rate }}</a>
+                    <a style="font-size: 12px">Оценка: {{ anime.rate }}</a>
                     {% else %}
-                    <a>-</a>
+                    <a style="font-size: 12px">Оценка отсутствует</a>
                     {% endif %}
                 </li>
             {% endfor %}

@@ -11,7 +11,13 @@
         {% for field in form %}
         <div class="row mt-3 align-items-center">
             <div class="col-auto">
-                <label for="{{ field.id_for_label }}" class="col-form-label">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="col-form-label">
+                    {% if field.label == 'Имя пользователя' %}
+                    Логин:
+                    {% else %}
+                    {{ field.label }}:
+                    {% endif %}
+                </label>
             </div>
             <div class="col-auto">
                 {{ field }}

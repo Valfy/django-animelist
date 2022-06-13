@@ -67,6 +67,11 @@
         </select>
     </div>
     <button onclick=give_rate() class="btn btn-danger mx-3" type="submit" id="rate_select_button">Оценить</button>
+    {% if a_status.rate > 0 %}
+    <p class="m-0">Ваша оценка: {{ a_status.rate }}</p>
+    {% else %}
+    <p class="m-0">Вы ещё не оценивали.</p>
+    {% endif %}
 </div>
 
 <div class="row g-0 mt-3">

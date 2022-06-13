@@ -9,7 +9,7 @@ from anime.models import Anime
 class AnimeProfile(models.Model):
     id = models.AutoField(primary_key=True)
     userlink = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Юзер')
-    username = models.CharField(blank=True, max_length=64, verbose_name='Имя')
+    username = models.CharField(blank=True, max_length=48, verbose_name='Имя')
     avatar = models.ImageField(upload_to='profiles/%Y/%m/%d/', blank=True,  verbose_name='Аватарка')
 
     def __str__(self):
