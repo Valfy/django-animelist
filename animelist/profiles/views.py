@@ -48,9 +48,12 @@ def user_logout(request):
 
 def profile_view(request, user_id):
     profile = AnimeProfile.objects.get(pk=user_id)
-    total_anime = UserAnimeRate.objects.filter(user=user_id, is_watched=True)
+    total_anime = UserAnimeRate.objects.filter(user=user_id, is_watched=True).select_related('anime')
     if request.user.is_authenticated:
-        authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
+        if request.user == profile.userlink:
+            authenticated_user = profile
+        else:
+            authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
         context = {
             'profile': profile,
             'a_user': authenticated_user,

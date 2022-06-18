@@ -16,7 +16,6 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -28,6 +27,9 @@ INSTALLED_APPS = [
 
     'anime.apps.AnimeConfig',
     'profiles.apps.ProfilesConfig',
+
+    'debug_toolbar',
+
 ]
 
 MIDDLEWARE = [
@@ -38,8 +40,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 ROOT_URLCONF = 'animelist.urls'
 
 TEMPLATES = [

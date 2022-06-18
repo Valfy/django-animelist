@@ -11,10 +11,11 @@
 
 <body>
 {% block header %}
-<header class="p-3 bg-dark text-white">
+<header class="p-3 text-white" style="background: #212529">
     <div class="container">
         <ul class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h1>Animelist</h1>
+            <h6 style="color: #dc3545; font-size: 44px; user-select: none">Anime</h6>
+            <h6 style="font-size: 44px; user-select: none">List</h6>
             <ul class="nav col-9 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 {% block links %}{% endblock %}
             </ul>
