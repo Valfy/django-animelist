@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.core.files.storage import default_storage
 
@@ -13,7 +13,7 @@ import datetime as dt
 
 def registration_page(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -44,6 +44,29 @@ def login_page(request):
 def user_logout(request):
     logout(request)
     return redirect('lp')
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        context = {
+            'form': form,
+        }
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Пароль успешно сменён!')
+            return redirect('main')
+        else:
+            messages.error(request, 'Произошла ошибка во время смены пароля!')
+    else:
+        form = PasswordChangeForm(request.user)
+        authenticated_user = AnimeProfile.objects.get(userlink=request.user.pk)
+        context = {
+            'form': form,
+            'a_user': authenticated_user
+        }
+    return render(request, 'cpp.html', context)
 
 
 def profile_view(request, user_id):

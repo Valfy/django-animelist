@@ -21,8 +21,9 @@
             </ul>
             <ul class="nav nav-pills">
                 {% if request.user.is_authenticated %}
-                <li><a href="{% url 'profile' a_user.pk %}" class="nav-link px-4 text-white">Добро пожаловать, {{ request.user.username }}</a></li>
-                <a href="{% url 'logout' %}" class="btn btn-danger">Выход</a></li>
+                <li><a href="{% url 'profile' a_user.pk %}" class="nav-link text-white mt-2">Добро пожаловать, {{ request.user.username }}</a></li>
+                <a href="{% url 'cpp' %}" class="btn btn-danger m-2">Поменять пароль</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger m-2">Выход</a></li>
                 {% else %}
                 <a href="{% url 'rp' %}" class="btn btn-danger m-2">Регистрация</a>
                 <a href="{% url 'lp' %}" class="btn btn-danger m-2">Вход</a>
